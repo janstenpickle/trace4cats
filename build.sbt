@@ -17,7 +17,7 @@ lazy val commonSettings = Seq(
   ),
   Compile / compile / javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
   addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1"),
-  addCompilerPlugin(("org.typelevel" %% "kind-projector" % "0.12.0").cross(CrossVersion.patch)),
+  addCompilerPlugin(("org.typelevel" %% "kind-projector" % "0.13.0").cross(CrossVersion.patch)),
   libraryDependencies ++= Seq(Dependencies.cats, Dependencies.collectionCompat),
   scalacOptions := {
     val opts = scalacOptions.value :+ "-Wconf:src=src_managed/.*:s,any:wv"
@@ -112,7 +112,6 @@ lazy val root = (project in file("."))
     `exporter-stream`,
     filtering,
     fs2,
-    `graal-kafka`,
     `http4s-client`,
     `http4s-common`,
     `http4s-server`,
@@ -171,7 +170,7 @@ lazy val example = (project in file("modules/example"))
       Dependencies.http4sBlazeClient,
       Dependencies.http4sBlazeServer,
       Dependencies.http4sDsl,
-      Dependencies.sttpClient2Http4s
+      Dependencies.sttpClient3Http4s
     )
   )
   .dependsOn(
@@ -192,7 +191,7 @@ lazy val example = (project in file("modules/example"))
     `opentelemetry-otlp-http-exporter`,
     `stackdriver-grpc-exporter`,
     `stackdriver-http-exporter`,
-    `sttp-client`,
+    `sttp-client3`,
     `tail-sampling`,
     `tail-sampling-cache-store`,
     filtering,
@@ -291,8 +290,7 @@ lazy val `jaeger-integration-test` =
         Dependencies.circeGeneric,
         Dependencies.http4sCirce,
         Dependencies.http4sBlazeClient,
-        Dependencies.logback,
-        Dependencies.testContainers
+        Dependencies.logback
       )
     )
     .dependsOn(kernel, test)
@@ -611,18 +609,13 @@ lazy val `sttp-client` = (project in file("modules/sttp-client"))
   .settings(
     name := "trace4cats-sttp-client",
     libraryDependencies ++= Seq(Dependencies.sttpClient2),
-    libraryDependencies ++= (Dependencies.test ++ Seq(Dependencies.http4sDsl, Dependencies.sttpClient2Http4s))
+    libraryDependencies ++= (Dependencies.test ++ Seq(
+      Dependencies.http4sDsl.withRevision(Dependencies.Versions.http4sLegacy),
+      Dependencies.sttpClient2Http4s
+    ))
       .map(_ % Test)
   )
-  .dependsOn(
-    model,
-    kernel,
-    core,
-    inject,
-    test              % "test->compile",
-    `exporter-common` % "test->compile",
-    `http4s-common`   % "test->test"
-  )
+  .dependsOn(model, kernel, core, inject, test % "test->compile", `exporter-common` % "test->compile")
 
 lazy val `sttp-client3` = (project in file("modules/sttp-client3"))
   .settings(publishSettings)
@@ -681,13 +674,6 @@ lazy val natchez = (project in file("modules/natchez"))
   .settings(name := "trace4cats-natchez", libraryDependencies ++= Seq(Dependencies.natchez))
   .dependsOn(model, kernel, core, inject)
 
-lazy val `graal-kafka` = (project in file("modules/graal-kafka"))
-  .settings(publishSettings)
-  .settings(
-    name := "trace4cats-graal-kafka",
-    libraryDependencies ++= Seq(Dependencies.svm, Dependencies.kafka, Dependencies.micronautCore)
-  )
-
 lazy val `agent-common` = (project in file("modules/agent-common"))
   .settings(publishSettings)
   .settings(
@@ -711,8 +697,8 @@ lazy val agent = (project in file("modules/agent"))
 lazy val `agent-kafka` = (project in file("modules/agent-kafka"))
   .settings(noPublishSettings)
   .settings(graalSettings)
-  .settings(name := "trace4cats-agent-kafka")
-  .dependsOn(model, `avro-kafka-exporter`, `exporter-common`, `graal-kafka`, `agent-common`)
+  .settings(name := "trace4cats-agent-kafka", libraryDependencies += Dependencies.graalKafkaClient)
+  .dependsOn(model, `avro-kafka-exporter`, `exporter-common`, `agent-common`)
   .enablePlugins(GraalVMNativeImagePlugin)
 
 lazy val filtering = (project in file("modules/filtering"))
@@ -842,7 +828,8 @@ lazy val `collector-lite` = (project in file("modules/collector-lite"))
       Dependencies.declineEffect,
       Dependencies.fs2,
       Dependencies.log4cats,
-      Dependencies.logback
+      Dependencies.logback,
+      Dependencies.graalKafkaClient
     )
   )
   .dependsOn(
@@ -855,8 +842,7 @@ lazy val `collector-lite` = (project in file("modules/collector-lite"))
     `jaeger-thrift-exporter`,
     `log-exporter`,
     `opentelemetry-otlp-http-exporter`,
-    `stackdriver-http-exporter`,
-    `graal-kafka`
+    `stackdriver-http-exporter`
   )
   .enablePlugins(GraalVMNativeImagePlugin)
 

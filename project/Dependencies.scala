@@ -2,52 +2,51 @@ import sbt._
 
 object Dependencies {
   object Versions {
-    val caseInsensitive = "1.1.3"
-    val cats = "2.6.0"
-    val catsEffect = "2.5.0"
-    val collectionCompat = "2.4.3"
+    val caseInsensitive = "1.1.4"
+    val cats = "2.6.1"
+    val catsEffect = "2.5.1"
+    val collectionCompat = "2.5.0"
     val commonsCodec = "1.15"
-    val circe = "0.13.0"
-    val circeYaml = "0.13.1"
+    val circe = "0.14.1"
+    val circeYaml = "0.14.0"
     val decline = "1.4.0"
     val embeddedRedis = "0.7.3"
-    val enumeratum = "1.6.1"
-    val fs2 = "2.5.5"
-    val fs2Kafka = "1.6.1"
-    val googleCredentials = "0.25.5"
-    val googleCloudTrace = "1.3.3"
-    val grpc = "1.37.0"
-    val http4s = "0.21.22"
-    val http4sJdkClient = "0.3.6"
+    val enumeratum = "1.7.0"
+    val fs2 = "2.5.9"
+    val fs2Kafka = "1.7.0"
+    val googleCredentials = "0.26.0"
+    val googleCloudTrace = "1.4.2"
+    val graalKafkaClient = "0.1.0"
+    val grpc = "1.39.0"
+    val http4s = "0.22.0-RC1"
+    val http4sJdkClient = "0.4.0-RC1"
+    val http4sLegacy = "0.21.24"
     val jaeger = "1.6.0"
-    val jwt = "3.16.0"
+    val jwt = "3.18.1"
     val kafka = "2.8.0"
-    val kittens = "2.3.0"
-    val log4cats = "1.3.0"
+    val kittens = "2.3.2"
+    val log4cats = "1.3.1"
     val logback = "1.2.3"
-    val micronaut = "2.5.3"
-    val natchez = "0.0.24"
-    val openTelemetry = "1.2.0"
-    val redis4cats = "0.13.1"
-    val scaffeine = "4.0.2"
-    val scala212 = "2.12.13"
-    val scala213 = "2.13.5"
-    val scalapb = "0.11.0"
+    val natchez = "0.0.26"
+    val openTelemetry = "1.4.0"
+    val redis4cats = "0.14.0"
+    val scaffeine = "4.1.0"
+    val scala212 = "2.12.14"
+    val scala213 = "2.13.6"
+    val scalapb = "0.11.1"
     val sttpClient2 = "2.2.9"
-    val sttpClient3 = "3.2.3"
-    val sttpModel = "1.4.6"
-    val sttpTapir = "0.17.19"
-    val svm = "19.2.1"
-    val vulcan = "1.6.0"
-    val zioInterop = "2.4.1.0"
+    val sttpClient3 = "3.3.11"
+    val sttpModel = "1.4.7"
+    val sttpTapir = "0.18.0"
+    val vulcan = "1.7.1"
+    val zioInterop = "2.5.1.0"
 
-    val catsTestkitScalatest = "2.1.4"
-    val disciplineScalatest = "2.1.4"
-    val discipline = "1.1.4"
+    val catsTestkitScalatest = "2.1.5"
+    val disciplineScalatest = "2.1.5"
+    val discipline = "1.1.5"
     val scalaCheck = "1.15.4"
-    val scalaCheckShapeless = "1.2.5"
-    val scalaTest = "3.2.8"
-    val testContainers = "0.39.4"
+    val scalaCheckShapeless = "1.3.0"
+    val scalaTest = "3.2.9"
   }
 
   lazy val caseInsensitive = "org.typelevel"                   %% "case-insensitive"                % Versions.caseInsensitive
@@ -69,6 +68,7 @@ object Dependencies {
   lazy val fs2 = "co.fs2"                                      %% "fs2-core"                        % Versions.fs2
   lazy val fs2Io = "co.fs2"                                    %% "fs2-io"                          % Versions.fs2
   lazy val fs2Kafka = "com.github.fd4s"                        %% "fs2-kafka"                       % Versions.fs2Kafka
+  lazy val graalKafkaClient = "io.janstenpickle"                % "graal-kafka-client"              % Versions.graalKafkaClient
   lazy val grpcOkHttp = "io.grpc"                               % "grpc-okhttp"                     % Versions.grpc
   lazy val grpcApi = "io.grpc"                                  % "grpc-api"                        % Versions.grpc
   lazy val http4sClient = "org.http4s"                         %% "http4s-client"                   % Versions.http4s
@@ -85,7 +85,6 @@ object Dependencies {
   lazy val kittens = "org.typelevel"                           %% "kittens"                         % Versions.kittens
   lazy val log4cats = "org.typelevel"                          %% "log4cats-slf4j"                  % Versions.log4cats
   lazy val logback = "ch.qos.logback"                           % "logback-classic"                 % Versions.logback
-  lazy val micronautCore = "io.micronaut"                       % "micronaut-core"                  % Versions.micronaut
   lazy val natchez = "org.tpolecat"                            %% "natchez-core"                    % Versions.natchez
   lazy val openTelemetrySdk = "io.opentelemetry"                % "opentelemetry-sdk"               % Versions.openTelemetry
   lazy val openTelemetryOtlpExporter = "io.opentelemetry"       % "opentelemetry-exporter-otlp"     % Versions.openTelemetry
@@ -97,13 +96,12 @@ object Dependencies {
   lazy val scalapbJson = "com.thesamet.scalapb"                %% "scalapb-json4s"                  % Versions.scalapb
   lazy val sttpClient2 = "com.softwaremill.sttp.client"        %% "cats"                            % Versions.sttpClient2
   lazy val sttpClient2Http4s = "com.softwaremill.sttp.client"  %% "http4s-backend"                  % Versions.sttpClient2
-  lazy val sttpClient3 = "com.softwaremill.sttp.client3"       %% "cats"                            % Versions.sttpClient3
-  lazy val sttpClient3Http4s = "com.softwaremill.sttp.client3" %% "http4s-backend"                  % Versions.sttpClient3
+  lazy val sttpClient3 = "com.softwaremill.sttp.client3"       %% "catsce2"                         % Versions.sttpClient3
+  lazy val sttpClient3Http4s = "com.softwaremill.sttp.client3" %% "http4s-ce2-backend"              % Versions.sttpClient3
   lazy val sttpModel = "com.softwaremill.sttp.model"           %% "core"                            % Versions.sttpModel
   lazy val sttpTapir = "com.softwaremill.sttp.tapir"           %% "tapir-cats"                      % Versions.sttpTapir
   lazy val sttpTapirJsonCirce = "com.softwaremill.sttp.tapir"  %% "tapir-json-circe"                % Versions.sttpTapir
   lazy val sttpTapirHttp4s = "com.softwaremill.sttp.tapir"     %% "tapir-http4s-server"             % Versions.sttpTapir
-  lazy val svm = "com.oracle.substratevm"                       % "svm"                             % Versions.svm % "provided"
   lazy val vulcan = "com.github.fd4s"                          %% "vulcan"                          % Versions.vulcan
   lazy val vulcanGeneric = "com.github.fd4s"                   %% "vulcan-generic"                  % Versions.vulcan
   lazy val vulcanEnumeratum = "com.github.fd4s"                %% "vulcan-enumeratum"               % Versions.vulcan
@@ -116,9 +114,8 @@ object Dependencies {
   lazy val disciplineCore = "org.typelevel"       %% "discipline-core"        % Versions.discipline
   lazy val scalacheck = "org.scalacheck"          %% "scalacheck"             % Versions.scalaCheck
   lazy val scalacheckShapeless =
-    "com.github.alexarchambault"           %% "scalacheck-shapeless_1.14"      % Versions.scalaCheckShapeless
-  lazy val scalaTest = "org.scalatest"     %% "scalatest"                      % Versions.scalaTest
-  lazy val testContainers = "com.dimafeng" %% "testcontainers-scala-scalatest" % Versions.testContainers
+    "com.github.alexarchambault"       %% "scalacheck-shapeless_1.15" % Versions.scalaCheckShapeless
+  lazy val scalaTest = "org.scalatest" %% "scalatest"                 % Versions.scalaTest
 
   lazy val test =
     Seq(
